@@ -13,22 +13,38 @@ connect.then((db)=>{
         name: 'Uthapizza',
         description: 'test'
     })
-        .then((dish)=>{
-            console.log(dish);
+    .then((dish)=>{
+        console.log(dish);
+        return Dishes.findByIdAndUpdate(dish._id, {
+            $set:{
+                description: "Updated test"
+            }
+            },{
+                new:true
+            }).exec();
+    })
+    .then((dish)=>{
+        console.log(dish);
 
-            return Dishes.find({}).exec();
-        })
-        .then((dishes)=>{
-            console.log(dishes);
-
-            return Dishes.deleteMany({});
-        })
-        .then(()=>{
-            return mongoose.connection.close();
-        })
-        .catch((err)=>{
-            console.log(err);
-            
-        })
+        dish.comments.push({
+            rating:5,
+            comment: 'Good one',
+            author:'Kuch Bhi'
+        });
+        return dish.save();
+    })
+    .then((dish)=>{
+        console.log(dish);
+        
+        
+        return Dishes.deleteMany({});
+    })
+    .then(()=>{
+        return mongoose.connection.close();
+    })
+    .catch((err)=>{
+        console.log(err);
+        
+    })
     
 });
