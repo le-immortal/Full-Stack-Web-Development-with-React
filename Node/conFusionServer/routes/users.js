@@ -7,6 +7,17 @@ var authenticate = require('../authenticate');
 
 /* GET users listing. */
 
+router
+.get('/',authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next)=>{
+  User.find({})
+  .then((user)=>{
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(user); 
+    },(err)=> next(err))
+    .catch((err)=> next(err));
+})
+
 router.post('/signup', (req, res, next) => {
   User.register(new User({username: req.body.username}), req.body.password, (err, user)=>{
     if(err){

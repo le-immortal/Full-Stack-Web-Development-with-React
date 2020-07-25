@@ -7,6 +7,7 @@ var ExtractJwt = require('passport-jwt').ExtractJwt;
 var jwt = require('jsonwebtoken');
 
 var config = require('./config');
+const user = require('./models/user');
 
 
 exports.local = passport.use(new LocalStrategy(User.authenticate()));
@@ -41,3 +42,19 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
     }));
 
 exports.verifyUser = passport.authenticate('jwt', {session: false});
+
+exports.verifyAdmin = function(req, res, next){
+    User.findOne({_id: req.body._id})
+    .then((user)=>{
+        console.log('User: ', req.user);
+        if(req.user.admin){
+            next();
+        }
+        else{
+            err = new Error('You are not an admin');
+            err.status = 403;
+            return next(err);
+        }   
+    },(err)=> next(err))
+    .catch((err) => next(err));
+};
