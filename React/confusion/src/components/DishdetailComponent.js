@@ -23,10 +23,11 @@ class CommentForm extends Component {
             isModalOpen: !this.state.isModalOpen
         })
     }
-    handleSubmit() {
+    handleSubmit(values) {
         this.toggleModal();
         // console.log('Current State is: ' + JSON.stringify(values));
         // alert('Current State is: ' + JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -38,7 +39,7 @@ class CommentForm extends Component {
             <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} >
                 <ModalHeader isOpen={this.state.isModalOpen} toggle={this.toggleModal}> Submit Comment </ModalHeader>
                 <ModalBody>
-                    <LocalForm onSubmit={(values) => this.handleSubmit()}>
+                    <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                     <Row className="form-group">
                         <Label htmlFor="rating" md={10}>Rating</Label>
                         <Col md={12}>
@@ -55,7 +56,7 @@ class CommentForm extends Component {
                     <Row className="form-group">
                         <Label htmlFor="name" md={10}>Your Name</Label>
                         <Col md={12}>
-                            <Control.text model=".name" id="name" name="name"
+                            <Control.text model=".author" id="name" name="name"
                                 placeholder="Your Name" 
                                 className="form-control"
                                 validators={{
@@ -64,7 +65,7 @@ class CommentForm extends Component {
                             />
                             <Errors
                                 className="text-danger"
-                                model=".name"
+                                model=".author"
                                 show="touched"
                                 messages={{
                                     required: 'Required',
@@ -120,7 +121,7 @@ class DishDetail extends Component {
             );
         }
     }
-    renderComments(comments) {
+    renderComments(comments, addComment, dishId) {
         if (comments != null) {
             const comment = comments.map(comment => {
                 return (
@@ -139,7 +140,7 @@ class DishDetail extends Component {
                     <li className="list-unstyled">
                         {comment}
                     </li>
-                    <CommentForm />
+                    <CommentForm dishId = {dishId} addComment= {addComment }/>
                 </div>
             );
         }
@@ -167,7 +168,7 @@ class DishDetail extends Component {
                         {this.renderDish(this.props.dish)}
                     </div>
                     <div className="col-12 col-md-5 m-1 App">
-                        {this.renderComments(this.props.comments)}
+                        {this.renderComments(this.props.comments, this.props.addComment, this.props.dish.id)}
                     </div>
                 </div>
             </div>
