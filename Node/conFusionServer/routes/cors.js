@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-const whitelist = ['http://localhost:3000', 'https://localhost:3443'];
+const whitelist = ['http://localhost:3000', 'https://localhost:3443', 'http://abhinav-Inspiron-5570:3001'];
+
 var corsOptionsDelegate = (req, callback) =>{
     var corsOptions;
     if(whitelist.indexOf(req.header('Origin')) !== -1){

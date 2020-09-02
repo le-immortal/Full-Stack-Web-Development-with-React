@@ -1,0 +1,108 @@
+1) Setting Up
+To install create-react-app globally, type the following at the prompt:
+
+npm install -g create-react-app
+
+At a convenient location on your computer, create a folder named React and move into that folder.
+
+create-react-app Folder_Name
+
+npm start
+
+2) Additional Configuration to use ReactStrap
+
+npm install bootstrap reactstrap react-popper --save
+
+Configure to use Bootstrap 4
+
+Next, open index.js file in the src folder and add the following line into the imports
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+3) Using Font Awesome Icons and Bootstrap-Social
+
+First use yarn or npm to fetch Font Awesome and Bootstrap-social to the project by typing the following at the prompt:
+
+npm install font-awesome bootstrap-social --save
+
+Then, open index.js file and update it as follows to enable your application to use Font Awesome and Bootstrap Social:
+
+
+import 'font-awesome/css/font-awesome.css';
+import 'bootstrap-social/bootstrap-social.css';
+
+4) Installing and Configuring React Router
+
+    First install React Router into your project by typing the following at the prompt:
+
+    npm install react-router-dom --save
+
+   	Then, open App.js and update it as follows:
+   	import { BrowserRouter } from 'react-router-dom';
+
+. . .
+
+    <BrowserRouter>
+      <div className="App">
+        <Main />
+      </div>
+    </BrowserRouter>
+    
+. . .
+
+
+	In Main Component
+
+	 <Switch>
+              <Route path='/home' component={HomePage} />
+              <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} />
+              <Redirect to="/home" />
+	 </Switch>
+
+
+	 {Navlink and Link} from 'react-router-dom'; for linking
+
+
+5) Installing and Configuring Redux
+
+    As a first step you will install Redux and React-Redux into your application as follows:
+
+    npm install redux react-redux --save
+
+    In App.js
+
+    import { Provider } from 'react-redux';
+	import { ConfigureStore } from './redux/configureStore';
+
+	const store = ConfigureStore();
+
+
+
+	. . .
+	      <Provider store={store}>
+	        <BrowserRouter>
+	          <div className="App">
+	            <Main />
+	          </div>
+	        </BrowserRouter>
+	      </Provider>
+
+
+	In Main.js
+
+	import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
+	import { connect } from 'react-redux';
+
+	const mapStateToProps = state => {
+  		return {
+  		  dishes: state.dishes,
+  		  comments: state.comments,
+  		  promotions: state.promotions,
+  		  leaders: state.leaders
+  		}
+	}
+
+	...
+	
+	export default withRouter(connect(mapStateToProps)(Main));

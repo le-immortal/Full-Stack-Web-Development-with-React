@@ -16,10 +16,12 @@ var promoRouter = require('./routes/promoRouter');
 var leaderRouter =require('./routes/leaderRouter');
 var uploadRouter = require('./routes/uploadRouter');
 var favouriteRouter = require('./routes/favourites');
+var commentRouter = require('./routes/commentRouter');
 
 const mongoose = require('mongoose');
 
 const Dishes = require('./models/dishes');
+const commentRouter = require('./routes/commentRouter');
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
@@ -89,9 +91,10 @@ app.use('/leaders', leaderRouter);
 app.use('/imageUpload', uploadRouter);
 app.use('/favourite', favouriteRouter);
 app.use('/promotions', promoRouter);
+app.use('/comments',commentRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function(req, res, next)   {
   next(createError(404));
 });
 
